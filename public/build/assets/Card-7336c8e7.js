@@ -1,0 +1,1 @@
+import{a as e}from"./app-232ef556.js";function o({children:p,className:r=""}){let d="p-4";return(r.includes("p-")||r.includes("px-")||r.includes("py-"))&&(d=""),e("div",{className:`bg-white shadow-lg dark:bg-dark rounded-xl ${d} mb-4 border border-apply `+r,children:p})}export{o as C};

@@ -1,0 +1,1 @@
+const r=o=>`${o.slice(0,1).toUpperCase()}${o.slice(1).toLowerCase()}`,n=o=>{if(!o)return null;const t=new Date(o).toDateString();return`${t.slice(4,7)} ${t.slice(8,10)}, ${t.slice(11,15)}`},a=()=>"#"+Math.floor(Math.random()*16777215).toString(16)+"40";function e(o,t){return o.length>t?o.slice(0,t-1)+"…":o}export{e as a,n as f,a as r,r as t};

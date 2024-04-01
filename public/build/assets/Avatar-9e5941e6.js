@@ -1,0 +1,1 @@
+import{a}from"./app-232ef556.js";function o({img:s,name:t,className:i,...r}){return a("img",{src:s||`https://api.dicebear.com/5.x/initials/svg?seed=${t.split(" ")[0]}%20${t.split(" ")[1]}`,alt:t,className:i,...r})}export{o as A};

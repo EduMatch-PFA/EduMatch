@@ -1,0 +1,1 @@
+import{j as a,a as i}from"./app-232ef556.js";function m({icon:e,size:s,text:r,className:n,...t}){return a("span",{...t,className:`cursor-pointer inline-flex items-center gap-1 font-semibold text-xs rounded-md px-2 py-1 mr-3 ${n}`,children:[e&&i(e,{size:s}),r]})}export{m as B};

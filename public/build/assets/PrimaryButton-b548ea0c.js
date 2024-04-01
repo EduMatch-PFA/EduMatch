@@ -1,0 +1,1 @@
+import{a as n}from"./app-232ef556.js";function e({className:r="",disabled:t,children:a,...o}){let i="bg-primary hover:bg-primary/80 dark:hover:bg-primary";return r.includes("bg-")&&(i=""),n("button",{...o,className:`btn-primary ${i} px-4 transition ease-in-out duration-150 ${t&&"opacity-25"} `+r,disabled:t,children:a})}export{e as P};
