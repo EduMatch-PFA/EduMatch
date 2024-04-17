@@ -11,6 +11,8 @@ use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\EnrollementController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ChatHistoryController;
+use App\Http\Controllers\SendMessageController;
 use App\Models\Experience;
 use App\Models\Feedback;
 use Illuminate\Foundation\Application;
@@ -63,10 +65,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/resume', [ResumeController::class, 'destroy'])->name('resume.delete');
 
     Route::post('/become-a-teacher', [ProfileController::class, 'updateRole'])->name('profile.role');
+    Route::post('/chat/send', [SendMessageController::class, 'send']);
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
     Route::delete('/settings', [SettingsController::class, 'destroy'])->name('settings.destroy');
+    Route::get('/chat/history', [ChatHistoryController::class, 'getHistory']);
+
 });
 
 require __DIR__ . '/auth.php';
