@@ -18,11 +18,15 @@ import FeedbacksCard from "./FeedbacksCard";
 import ChatMessage from './ChatMessage'; // Assuming ChatMessage is in the same directory
 
 const DetailsLayout = ({ session }) => {
-  const { props: { isEnrolled, auth: { user } } } = usePage();
+  const isEnrolled = usePage().props.isEnrolled;
+  const user = usePage().props.auth.user;
   const { data, setData, post, processing, reset } = useForm({
     note: "",
   });
-
+  const feedbacks = session.feedbacks;
+  const findFeedback = (data, id) => {
+    return data.filter((f) => f.userId === id);
+  };
   const enroll = (e) => {
     e.preventDefault();
     post(`/session-enroll/${session.id}`, {
@@ -35,11 +39,9 @@ const DetailsLayout = ({ session }) => {
 
   const [showChat, setShowChat] = useState(false); // State to control chat visibility
 
-  const findFeedback = (id) => session.feedbacks.filter((f) => f.userId === id);
-
   return (
     <div className="p-5 mt-8 mr-5 flex flex-col lg:flex-row gap-5" key={session.id}>
-      {/* Left Content */}
+      {/* Back button and session details */}
       <div className="left-content">
         <div className="flex items-center gap-5">
           <Avatar
@@ -75,10 +77,14 @@ const DetailsLayout = ({ session }) => {
             <SmallDetail Icon={BiCalendar} h1={`${session.scheduled_time}`} h2="Scheduled Time" />
             <SmallDetail
               Icon={MdPeople}
-              h1={`Limited to ${session.placesLimit} place${session.placesLimit > 1 ? 's' : ''}`}
+              h1={
+                "Limited to " +
+                  session.placesLimit +
+                  ` place${session.placesLimit > 1 ? "s" : ""}`
+              }
               h2="Places"
             />
-          </div>
+                  </div>
         </div>
         {/* Skills */}
         <div className="mt-7">
@@ -91,7 +97,7 @@ const DetailsLayout = ({ session }) => {
             ))}
           </div>
         </div>
-        {/* Description */}
+        {/* description */}
         <div className="mt-7">
           <InputLabel value="Description" className="font-semibold text-[1.05rem]" />
           <Card className="p-4 my-4 description">
@@ -100,16 +106,14 @@ const DetailsLayout = ({ session }) => {
             </p>
           </Card>
         </div>
-        {/* Feedbacks */}
+        {/* feedbakcs */}
         <div className="mt-7">
           <InputLabel value="Feedbacks" className="font-semibold text-[1.05rem]" />
           <FeedbacksCard feedbacks={session.feedbacks} className="my-4" />
         </div>
       </div>
-
-      {/* Right Content */}
       <div className="right-content">
-        {/* Enrollments */}
+        {/* Enrollements */}
         <div className="">
           <span className="flex flex-col">
             <InputLabel
@@ -127,8 +131,7 @@ const DetailsLayout = ({ session }) => {
             </div>
           </div>
         </div>
-        {/* Conditional rendering based on user and session */}
-        {(user.id === session.user.id) ? (
+        {user.id === session.user.id ? (
           <div className="mt-8">
             <span className="flex flex-col">
               <InputLabel value="You own this session" className="ml-0 font-semibold " />
@@ -166,54 +169,65 @@ const DetailsLayout = ({ session }) => {
                   placeholder="Write your note here..."
                   name="note"
                   onChange={(e) => setData("note", e.target.value)}
-                  value={data.note}
-                />
+                >
+                  {data.note}
+                </TextArea>
                 <div className="flexible justify-end mt-2">
                   <PrimaryButton type="submit" disabled={processing || isEnrolled}>
-                    {isEnrolled ? "Enrolled" : "Enroll"}
-                  </PrimaryButton>
-                </div>
-              </form>
+                      
+                                        {isEnrolled ? "Enrolled" : "Enroll"}
+                                    </PrimaryButton>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="mt-8">
+                        <span className="flex flex-col">
+                            <InputLabel
+                                value="You're enrolled in this session"
+                                className="ml-0 font-semibold "
+                            />
+                            <div className="w-20 mt-2 rounded-lg h-[2px] bg-primary"></div>
+                        </span>
+                        <Link
+                            href="/dashboard/sessions"
+                            className="mt-5 flexible-center"
+                        >
+                            <PrimaryButton>
+                                {session.user.username !== user.username &&
+                                findFeedback(feedbacks, user.id).length === 0 &&
+                                !session.is_active
+                                    ? "Give feedback"
+                                    : "View in dashboard"}
+                            </PrimaryButton>
+                        </Link>
+                    </div>
+                )}
             </div>
-          </div>
-        ) : (
+        </div>
+                              {/* Chat section */}
           <div className="mt-8">
             <span className="flex flex-col">
               <InputLabel
-                value="You're enrolled in this session"
+                value="Chat with the teacher"
                 className="ml-0 font-semibold "
               />
               <div className="w-20 mt-2 rounded-lg h-[2px] bg-primary"></div>
             </span>
-            <Link href="/dashboard/sessions" className="mt-5 flexible-center">
-              <PrimaryButton>
-                {session.user.username !== user.username &&
-                  findFeedback(user.id).length === 0 &&
-                  !session.is_active
-                  ? "Give feedback"
-                  : "View in dashboard"}
-              </PrimaryButton>
-            </Link>
-          </div>
-        )}
-
-        {/* Chat Section */}
-        <div className="mt-8">
-            <span className="flex flex-col">
-                <InputLabel value="Chat with the teacher" className="ml-0 font-semibold " />
-                <div className="w-20 mt-2 rounded-lg h-[2px] bg-primary"></div>
-            </span>
             <button
-                className="mt-5 flexible-center bg-primary text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                onClick={() => setShowChat(!showChat)}
+              className="mt-5 flexible-center bg-primary text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              onClick={() => setShowChat(!showChat)}
             >
-                {showChat ? 'Close Chat' : 'Open Chat'}
+              {showChat ? 'Close Chat' : 'Open Chat'}
             </button>
             {showChat && (
-                <div className="mt-4 bg-gray-100 rounded-lg shadow p-4">
+              <div className="mt-4 bg-gray-100 rounded-lg shadow p-4">
                 <ChatMessage sessionId={session.id} userId={user.id} />
-                </div>
+              </div>
             )}
+          </div>
+          {/* ... your existing code for enrolments section ... */}
         </div>
       </div>
     </div>
@@ -221,3 +235,4 @@ const DetailsLayout = ({ session }) => {
 };
 
 export default DetailsLayout;
+

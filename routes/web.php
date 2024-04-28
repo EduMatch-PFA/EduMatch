@@ -70,8 +70,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
     Route::delete('/settings', [SettingsController::class, 'destroy'])->name('settings.destroy');
-    Route::get('/chat/history', [ChatHistoryController::class, 'getHistory']);
-
 });
 
 require __DIR__ . '/auth.php';

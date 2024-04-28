@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\AllSessionsCollection;
 use App\Http\Resources\AllSessionsCollectionPagination;
 use App\Http\Resources\SessionResource;
+
 use App\Models\Enrollment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
