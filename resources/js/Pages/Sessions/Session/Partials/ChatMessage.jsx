@@ -7,7 +7,7 @@ const ChatMessage = ({ sessionId, userId }) => {
   const [newMessage, setNewMessage] = useState('');
   const [error, setError] = useState(null); // State for error handling
 
-  const pusher = usePusher(process.env.REACT_APP_PUSHER_APP_KEY); // Assuming Pusher key in a React environment variable
+  const pusher = usePusher(process.env.PUSHER_APP_KEY); // Assuming Pusher key in a React environment variable
 
   useEffect(() => {
     const channel = pusher.subscribe(`session.${sessionId}`);

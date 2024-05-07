@@ -97,8 +97,6 @@ export default function CreateSession() {
                                 message={errors.scheduled_time}
                                 className="mt-2"
                             />
-                            {/* location */}
-
                             <InputLabel
                                 className="mt-8"
                                 htmlFor="location"
@@ -152,7 +150,7 @@ export default function CreateSession() {
                                 className="mt-2"
                             />
                             {/* skills_taught */}
-                            <InputLabel
+                                <InputLabel
                                 className="mt-8"
                                 htmlFor="skills_taught"
                                 hint="What skills or knowledge will be taught?"
